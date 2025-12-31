@@ -6,7 +6,7 @@ from typing import List, Optional
 from uuid import uuid4
 
 import pandas as pd
-from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
@@ -313,11 +313,7 @@ def _parse_range(from_: Optional[str], to: Optional[str]):
 
 
 @router.get("/dashboard/summary", response_model=DashboardSummaryOut, dependencies=[Depends(require_admin)])
-def dashboard_summary(
-    from_: Optional[str] = Query(None, alias="from"),
-    to: Optional[str] = None,
-    db: Session = Depends(get_db)
-):
+def dashboard_summary(from_: Optional[str] = None, to: Optional[str] = None, db: Session = Depends(get_db)):
     start, end = _parse_range(from_, to)
 
     ev_q = select(func.count()).select_from(Event).where(Event.type == "impression")
@@ -337,12 +333,7 @@ def dashboard_summary(
 
 
 @router.get("/dashboard/rank", response_model=DashboardRankOut, dependencies=[Depends(require_admin)])
-def dashboard_rank(
-    sort: str = "like_rate",
-    from_: Optional[str] = Query(None, alias="from"),
-    to: Optional[str] = None,
-    db: Session = Depends(get_db)
-):
+def dashboard_rank(sort: str = "like_rate", from_: Optional[str] = None, to: Optional[str] = None, db: Session = Depends(get_db)):
     start, end = _parse_range(from_, to)
 
     teas = db.execute(select(Tea).where(Tea.status == "online")).scalars().all()
@@ -397,11 +388,7 @@ def dashboard_rank(
 
 
 @router.get("/dashboard/trend", dependencies=[Depends(require_admin)])
-def dashboard_trend(
-    from_: str = Query(..., alias="from"),
-    to: str = Query(...),
-    db: Session = Depends(get_db)
-):
+def dashboard_trend(from_: str, to: str, db: Session = Depends(get_db)):
     start, end = _parse_range(from_, to)
 
     if not start or not end:

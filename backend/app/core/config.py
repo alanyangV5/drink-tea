@@ -21,6 +21,8 @@ class Settings:
     jwt_secret: str
     jwt_expire_minutes: int
 
+    log_level: str
+
 
 def get_settings() -> Settings:
     app_env = os.getenv("APP_ENV", "dev")
@@ -33,6 +35,8 @@ def get_settings() -> Settings:
     jwt_secret = os.getenv("JWT_SECRET", "change-me-in-prod")
     jwt_expire_minutes = int(os.getenv("JWT_EXPIRE_MINUTES", "720"))
 
+    log_level = os.getenv("LOG_LEVEL", "INFO")
+
     return Settings(
         app_env=app_env,
         cors_origins=cors_origins,
@@ -41,4 +45,5 @@ def get_settings() -> Settings:
         admin_password_hash=admin_password_hash,
         jwt_secret=jwt_secret,
         jwt_expire_minutes=jwt_expire_minutes,
+        log_level=log_level,
     )
