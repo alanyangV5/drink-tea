@@ -120,7 +120,7 @@ function commit(action: 'like' | 'dislike') {
   if (state.teas.length < 5) loadMore()
 }
 
-function onPointerUp() {
+function onPointerUp(_e?: PointerEvent) {
   if (!drag.active) return
   const tea = topTea.value
   if (!tea) return
@@ -155,7 +155,7 @@ function onHistoryPointerMove(e: PointerEvent) {
   historyDrag.x = dx
 }
 
-function onHistoryPointerUp() {
+function onHistoryPointerUp(_e?: PointerEvent) {
   if (!historyDrag.active) return
   const threshold = Math.min(100, Math.max(80, window.innerWidth * 0.2))
 
@@ -382,8 +382,8 @@ onMounted(() => {
                 :style="!isHistoryView ? cardStyle : historyCardStyle"
                 @pointerdown="!isHistoryView ? onPointerDown($event) : onHistoryPointerDown($event)"
                 @pointermove="!isHistoryView ? onPointerMove($event) : onHistoryPointerMove($event)"
-                @pointerup="!isHistoryView ? onPointerUp($event) : onHistoryPointerUp()"
-                @pointercancel="!isHistoryView ? onPointerUp($event) : onHistoryPointerUp()"
+                @pointerup="!isHistoryView ? onPointerUp($event) : onHistoryPointerUp($event)"
+                @pointercancel="!isHistoryView ? onPointerUp($event) : onHistoryPointerUp($event)"
               >
                 <TeaCard :tea="topTea" :isTop="true" :online="online" />
               </div>
