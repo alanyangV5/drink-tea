@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# 虚拟环境
+.venv/
+venv/
+ENV/
+env/
+
+# 环境变量（重要：不要提交 .env 文件）
+.env
+.env.local
+.env.*.local
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+
+# 上传文件
+data/uploads/*
+!data/uploads/.gitkeep
+
+# 日志文件
+*.log
+logs/
+*.log.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# 备份文件
+*.bak
+*.backup
+backup-*.db
+
+# 临时文件
+*.tmp
+*.temp
