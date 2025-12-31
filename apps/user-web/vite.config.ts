@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production' ? '/drink-tea/' : '/',
   plugins: [
     vue(),
     VitePWA({
@@ -16,7 +17,7 @@ export default defineConfig({
         theme_color: '#FFFDF9',
         background_color: '#FFFDF9',
         display: 'standalone',
-        icons: [{ src: '/pwa.svg', sizes: '512x512', type: 'image/svg+xml' }]
+        icons: [{ src: 'pwa.svg', sizes: '512x512', type: 'image/svg+xml' }]
       },
       workbox: {
         runtimeCaching: [
