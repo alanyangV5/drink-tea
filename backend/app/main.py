@@ -55,14 +55,16 @@ def create_app() -> FastAPI:
 
     app = FastAPI(title="来喝茶 API", version="0.1.0")
 
-    if settings.cors_origins:
-        app.add_middleware(
-            CORSMiddleware,
-            allow_origins=settings.cors_origins,
-            allow_credentials=True,
-            allow_methods=["*"] ,
-            allow_headers=["*"],
-        )
+    # CORS 配置：如果未配置则默认允许所有源
+    allow_origins = settings.cors_origins if settings.cors_origins else ["*"]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=allow_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    logger.info(f"CORS configured with origins: {allow_origins}")
 
     # 静态上传文件
     uploads_dir = os.path.join(os.path.dirname(__file__), "..", "data", "uploads")
