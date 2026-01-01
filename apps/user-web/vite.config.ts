@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/drink-tea/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/drink-tea-front/' : '/',
   plugins: [
     vue(),
     VitePWA({

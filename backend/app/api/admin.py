@@ -7,6 +7,7 @@ from uuid import uuid4
 
 import pandas as pd
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from passlib.exc import UnknownHashError
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
@@ -39,7 +40,17 @@ def login(body: LoginIn):
         raise HTTPException(status_code=401, detail={"code": "unauthorized", "message": "bad credentials"})
 
     if settings.admin_password_hash:
-        ok = verify_password(body.password, settings.admin_password_hash)
+        try:
+            ok = verify_password(body.password, settings.admin_password_hash)
+        except UnknownHashError:
+            # 哈希格式无效，可能是配置错误
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "code": "config_error",
+                    "message": "Invalid ADMIN_PASSWORD_HASH format. Use ADMIN_PASSWORD for plain text, or generate a valid bcrypt hash using scripts/gen-hash.py"
+                }
+            )
     elif settings.admin_password:
         ok = body.password == settings.admin_password
     else:
